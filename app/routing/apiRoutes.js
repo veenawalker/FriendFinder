@@ -10,10 +10,49 @@ module.exports = function(app) {
 	app.get("/api/friends", function(req, res) {
 		var result = JSON.stringify(friends, null, 2) + "   " + JSON.stringify(friends[0], null, 2);
 	
-
-
 		return res.send(result);
 	});
+	app.post("/api/friends", function(req, res){
+	console.log(req.body)
+	var userInput = req.body.scores;
+	var scoreDifferenceArray = [];
+	var match = 0;
+
+	// friend comparison logic
+	//loop to compare with each person
+
+	for(var i = 0; i < friends.length; i++) {
+		var scoreDifference = 0;
+		for( var j = 0; j < userInput.length; j++) {
+			scoreDifference += Math.abs(parseInt(friends[i].scores[j]) - parseInt(userInput[j]))
+			scoreDifferenceArray.push(scoreDifference);
+		}
+
+			for(var i = 0; i < scoreDifferenceArray.length; i++) {
+				if (scoreDifferenceArray[i]<=scoreDifferenceArray[match]) {
+					match = i;
+				}
+			
+		}
+	}
+	var best = friends[match]
+	res.json(best)
+
+	
+	
+
+
+	//if else difference is low best match
+	// push in matchname & match image 
+
+	
+	friends.push(req.body)
+	res.json({
+		matchName: "somebody",
+		matchImage: 'https://static.boredpanda.com/blog/wp-content/uploads/2016/10/fb_image_5808c83fa24c1__700.jpg'
+	})
+	});
+
 }
 
 
